@@ -13,6 +13,15 @@ module.exports = {
     ecmaVersion: 2020
   },
   rules: {
+    'react/react-in-jsx-scope': 'off',
+    "react/jsx-filename-extension": ['off', { "extensions": [".tsx", ".ts"] }],
+    'react/jsx-props-no-spreading': ['off', {
+      html: 'enforce',
+      custom: 'enforce',
+      explicitSpread: 'ignore',
+      exceptions: [],
+    }],
+    'react/no-unknown-property': 'off',
     "import/extensions": "off",
     "import/no-unresolved": "off",
     'no-param-reassign': [
@@ -26,7 +35,8 @@ module.exports = {
           'request',
           'res',
           'response',
-          'state'
+          'state',
+          'result'
         ]
       }
     ],
