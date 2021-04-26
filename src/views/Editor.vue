@@ -1,7 +1,7 @@
 <template>
   <div class="editor-container">
     <a-layout>
-      <a-layout-sider width="300" style="background: yellow">
+      <a-layout-sider width="300" style="background: #fff">
         <div class="sidebar-container">
           组件列表
           <components-list :list="defaultTemplates" @on-item-click="addItem"/>
@@ -26,7 +26,7 @@
           </div>
         </a-layout-content>
       </a-layout>
-      <a-layout-sider width="300" style="background: purple" class="settings-panel">
+      <a-layout-sider width="300" style="background: #fff" class="settings-panel">
         组件属性
         <props-table
           v-if="currentElement && currentElement.props"
