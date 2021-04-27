@@ -28,7 +28,7 @@ export default defineComponent({
   props: {
     value: {
       type: String,
-      default: '#ffffff',
+      default: '#000000',
     },
     colors: {
       type: Array as PropType<string[]>,

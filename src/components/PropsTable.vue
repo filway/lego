@@ -3,7 +3,9 @@
     <div
       v-for="(value, key) in finalProps"
       :key="key"
+      :class="{'no-text': !value.text}"
       class="prop-item"
+      :id="`item-${key}`"
     >
       <span class="label" v-if="value.text">{{value.text}}</span>
       <div class="prop-component">
@@ -38,6 +40,7 @@ import { TextComponentProps } from '../defaultProps';
 import { mapPropsToForms } from '../propsMap';
 import RenderVnode from '../components/RenderVnode';
 import ColorPicker from './ColorPicker.vue';
+import IconSwitch from './IconSwitch.vue';
 
 interface FormProps {
   component: string;
@@ -61,6 +64,7 @@ export default defineComponent({
   components: {
     RenderVnode,
     ColorPicker,
+    IconSwitch,
   },
   emits: ['change'],
   setup(props, context) {
@@ -104,5 +108,12 @@ export default defineComponent({
 }
 .prop-component {
   width: 70%;
+}
+.prop-item.no-text {
+  display: inline-block;
+  margin: 0 10px 10px 0;
+}
+#item-fontWeight {
+  margin-left: 28%;
 }
 </style>

@@ -70,4 +70,25 @@ export const mapPropsToForms: PropsToForms = {
     component: 'color-picker',
     text: '字体颜色',
   },
+  fontWeight: {
+    component: 'icon-switch',
+    initalTransform: (v: string) => v === 'bold',
+    afterTransform: (e: boolean) => (e ? 'bold' : 'normal'),
+    valueProp: 'checked',
+    extraProps: { iconName: 'B', tip: '加粗' },
+  },
+  fontStyle: {
+    component: 'icon-switch',
+    initalTransform: (v: string) => v === 'italic',
+    afterTransform: (e: boolean) => (e ? 'italic' : 'normal'),
+    valueProp: 'checked',
+    extraProps: { iconName: 'I', tip: '斜体' },
+  },
+  textDecoration: {
+    component: 'icon-switch',
+    initalTransform: (v: string) => v === 'underline',
+    afterTransform: (e: boolean) => (e ? 'underline' : 'none'),
+    valueProp: 'checked',
+    extraProps: { iconName: 'U', tip: '下划线' },
+  },
 };
