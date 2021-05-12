@@ -5,33 +5,47 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@types/lodash-es": "^4.17.4",
+    "@types/uuid": "^8.3.0",
     "ant-design-vue": "^2.1.2",
+    "axios": "^0.21.1",
     "core-js": "^3.6.5",
+    "lodash": "^4.17.21",
+    "lodash-es": "^4.17.21",
+    "uuid": "^3.4.0",
     "vue": "^3.0.0",
     "vue-router": "^4.0.6",
     "vuex": "^4.0.0"
   },
   "devDependencies": {
+    "@types/jest": "^24.0.19",
     "@typescript-eslint/eslint-plugin": "^2.33.0",
     "@typescript-eslint/parser": "^2.33.0",
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",
     "@vue/cli-plugin-typescript": "~4.5.0",
+    "@vue/cli-plugin-unit-jest": "~4.5.0",
     "@vue/cli-plugin-vuex": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
     "@vue/compiler-sfc": "^3.0.0",
     "@vue/eslint-config-typescript": "^5.0.2",
+    "@vue/test-utils": "^2.0.0-0",
     "eslint": "^6.7.2",
     "eslint-config-airbnb": "^18.2.1",
+    "eslint-config-airbnb-base": "^14.2.1",
     "eslint-import-resolver-node": "^0.3.4",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-react": "^7.23.2",
     "eslint-plugin-vue": "^7.0.0-0",
+    "flush-promises": "^1.0.2",
     "prettier": "1.19.1",
-    "typescript": "~3.9.3"
+    "rgb-hex": "^3.0.0",
+    "typescript": "~3.9.3",
+    "vue-jest": "^5.0.0-0"
   }
 }
