@@ -1,6 +1,6 @@
 import { Module } from 'vuex';
 import { v4 as uuidv4 } from 'uuid';
-import { TextComponentProps } from '@/defaultProps';
+import { ImageComponentProps, TextComponentProps } from '@/defaultProps';
 import { GlobalDataProps } from './index';
 
 export interface EditorProps {
@@ -12,7 +12,7 @@ export interface EditorProps {
 
 export interface ComponentData {
   // 元素的属性，属性详情见下面
-  props: Partial<TextComponentProps>;
+  props: Partial<TextComponentProps & ImageComponentProps>;
   // uuid v4
   id: string;
   name: string;
@@ -42,13 +42,8 @@ const editor: Module<EditorProps, GlobalDataProps> = {
     currentElement: '',
   },
   mutations: {
-    addComponent(state, props: Partial<TextComponentProps>) {
-      const newComponent: ComponentData = {
-        id: uuidv4(),
-        name: 'l-text',
-        props,
-      };
-      state.components.push(newComponent);
+    addComponent(state, component: ComponentData) {
+      state.components.push(component);
     },
     setActive(state, currentId: string) {
       state.currentElement = currentId;
