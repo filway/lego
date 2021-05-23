@@ -1,7 +1,7 @@
 <template>
   <uploader
     class="styled-uploader"
-    action="http://laravel.test/api/home/upload"
+    action="http://localhost:3000/api/utils/upload"
     :showUploadList="false"
     :beforeUpload="commonUploadCheck"
     @success="(data) => {handleUploadSuccess(data.resp, data.file.raw)}"

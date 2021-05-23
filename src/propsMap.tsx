@@ -1,5 +1,5 @@
-import { h, VNode } from 'vue';
-import { TextComponentProps } from './defaultProps';
+import { VNode } from 'vue';
+import { AllComponentProps } from 'filway-lego-components';
 
 export interface PropToForm {
   component: string;
@@ -13,7 +13,7 @@ export interface PropToForm {
   eventName?: string;
 }
 export type PropsToForms = {
-  [P in keyof TextComponentProps]?: PropToForm
+  [P in keyof AllComponentProps]?: PropToForm
 }
 const fontFamilyArr = [
   { text: '宋体', value: '"SimSun","STSong"' },
@@ -75,20 +75,23 @@ export const mapPropsToForms: PropsToForms = {
     initalTransform: (v: string) => v === 'bold',
     afterTransform: (e: boolean) => (e ? 'bold' : 'normal'),
     valueProp: 'checked',
-    extraProps: { iconName: 'B', tip: '加粗' },
+    extraProps: { iconName: 'BoldOutlined', tip: '加粗' },
   },
   fontStyle: {
     component: 'icon-switch',
     initalTransform: (v: string) => v === 'italic',
     afterTransform: (e: boolean) => (e ? 'italic' : 'normal'),
     valueProp: 'checked',
-    extraProps: { iconName: 'I', tip: '斜体' },
+    extraProps: { iconName: 'ItalicOutlined', tip: '斜体' },
   },
   textDecoration: {
     component: 'icon-switch',
     initalTransform: (v: string) => v === 'underline',
     afterTransform: (e: boolean) => (e ? 'underline' : 'none'),
     valueProp: 'checked',
-    extraProps: { iconName: 'U', tip: '下划线' },
+    extraProps: { iconName: 'UnderlineOutlined', tip: '下划线' },
+  },
+  src: {
+    component: 'image-processer',
   },
 };

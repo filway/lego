@@ -15,11 +15,14 @@
     "ant-design-vue": "^2.1.2",
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
+    "cropperjs": "^1.5.11",
+    "filway-lego-components": "^1.0.2",
     "lodash": "^4.17.21",
     "lodash-es": "^4.17.21",
     "uuid": "^3.4.0",
     "vue": "^3.0.0",
     "vue-router": "^4.0.6",
+    "vuedraggable": "^2.24.3",
     "vuex": "^4.0.0"
   },
   "devDependencies": {

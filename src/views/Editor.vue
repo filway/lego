@@ -27,42 +27,65 @@
         </a-layout-content>
       </a-layout>
       <a-layout-sider width="300" style="background: #fff" class="settings-panel">
-        组件属性
-        <props-table
-          v-if="currentElement && currentElement.props"
-          :props="currentElement.props"
-          @change="handleChange"
-        ></props-table>
-        <pre>
-          {{currentElement && currentElement.props}}
-        </pre>
-      </a-layout-sider>
+        <a-tabs type="card" v-model:activeKey="activePanel">
+          <a-tab-pane key="component" tab="属性设置" class="no-top-radius">
+            <div v-if="currentElement">
+            <edit-group
+              v-if="!currentElement.isLocked"
+              :props="currentElement.props"
+              @change="handleChange"
+            ></edit-group>
+            <div v-else>
+              <a-empty>
+                <template #description>
+                  <p>该元素被锁定，无法编辑</p>
+                </template>
+              </a-empty>
+            </div>
+            </div>
+            <pre>
+              {{currentElement && currentElement.props}}
+            </pre>
+          </a-tab-pane>
+          <a-tab-pane key="layer" tab="图层设置">
+            <layer-list
+              :list="components"
+              :selectedId="currentElement && currentElement.id"
+              @change="handleChange"
+              @select="setActive"
+            >
+            </layer-list>
+          </a-tab-pane>
+        </a-tabs>
+    </a-layout-sider>
     </a-layout>
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue';
+import { computed, defineComponent, ref } from 'vue';
 import { useStore } from 'vuex';
 import { GlobalDataProps } from '../store/index';
-import LText from '../components/LText.vue';
-import LImage from '../components/LImage.vue';
 import PropsTable from '../components/PropsTable.vue';
+import LayerList from '../components/LayerList.vue';
+import EditGroup from '../components/EditGroup.vue';
 import ComponentsList from '../components/ComponentsList.vue';
 import defaultTemplates from '../defaultTemplates';
 import EditWrapper from '../components/EditWrapper.vue';
 import { ComponentData } from '../store/editor';
 
+export type TabType = 'component' | 'layer' | 'page'
 export default defineComponent({
   components: {
-    LText,
     ComponentsList,
     EditWrapper,
     PropsTable,
-    LImage,
+    LayerList,
+    EditGroup,
   },
   setup() {
     const store = useStore<GlobalDataProps>();
+    const activePanel = ref<TabType>('component');
     const components = computed(() => store.state.editor.components);
     const currentElement = computed<ComponentData | null>(() => store.getters.getCurrentElement);
     const addItem = (component: any) => {
@@ -81,6 +104,7 @@ export default defineComponent({
       setActive,
       currentElement,
       handleChange,
+      activePanel,
     };
   },
 });

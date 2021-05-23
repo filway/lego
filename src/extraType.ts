@@ -1,7 +1,7 @@
 export interface UploadResp {
-  code: number;
-  message: string;
+  errno: number;
+  message?: string;
   data: {
-    url: string;
+    urls: string[];
   };
 }

@@ -12,16 +12,15 @@
 </template>
 
 <script lang="ts">
-import { TextComponentProps } from '@/defaultProps';
 import { defineComponent } from 'vue';
 import { v4 as uuidv4 } from 'uuid';
 import { message } from 'ant-design-vue';
 import { getImageDimensions } from '@/helper';
+import { imageDefaultProps, TextComponentProps } from 'filway-lego-components';
 import StyledUploader from './StyledUploader.vue';
 import LText from './LText.vue';
 import { ComponentData } from '../store/editor';
 import { UploadResp } from '../extraType';
-import { imageDefaultProps } from '../defaultProps';
 
 export default defineComponent({
   props: {
@@ -55,7 +54,7 @@ export default defineComponent({
         },
       };
       message.success('上传成功');
-      componentData.props.src = resp.data.url;
+      [componentData.props.src] = resp.data.urls;
       getImageDimensions(file).then(({ width }) => {
         console.log(width);
         const maxWidth = 373;

@@ -2,7 +2,7 @@
   <div class="icon-template" @click.prevent="handleClick">
      <a-tooltip placement="top" :title="tip">
        <a-button :type="checked ? 'primary' : 'default'" shape="circle">
-        {{iconName}}
+         <template v-slot:icon><component :is="iconName" /></template>
       </a-button>
     </a-tooltip>
   </div>
@@ -10,8 +10,14 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { BoldOutlined, ItalicOutlined, UnderlineOutlined } from '@ant-design/icons-vue';
 
 export default defineComponent({
+  components: {
+    BoldOutlined,
+    ItalicOutlined,
+    UnderlineOutlined,
+  },
   props: {
     iconName: {
       type: String,
