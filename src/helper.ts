@@ -49,3 +49,14 @@ export const getImageDimensions = (url: string | File) => new Promise<{
     reject(new Error('There was some problem with the image.'));
   });
 });
+
+export const getParentElement = (element: HTMLElement, className: string) => {
+  let tmpEle = element;
+  while (tmpEle) {
+    if (tmpEle.classList && tmpEle.classList.contains(className)) {
+      return tmpEle;
+    }
+    tmpEle = tmpEle.parentNode as HTMLElement;
+  }
+  return null;
+};

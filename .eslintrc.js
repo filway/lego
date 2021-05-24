@@ -18,6 +18,7 @@ module.exports = {
 
   rules: {
     'no-shadow': 'off',
+    'max-len': [1, 120],
     'react/react-in-jsx-scope': 'off',
     'react/jsx-filename-extension': ['off', { extensions: ['.tsx', '.ts'] }],
     'react/jsx-props-no-spreading': ['off', {
@@ -42,7 +43,8 @@ module.exports = {
           'response',
           'state',
           'result',
-          'readyFile'
+          'readyFile',
+          'element'
         ],
       },
     ],

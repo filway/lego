@@ -3,8 +3,8 @@
   <a-collapse v-model:activeKey="currentKey">
     <a-collapse-panel
       v-for="(item, index) in editGroups"
-      :key="`item-${index}`" :
-      header="item.text"
+      :key="`item-${index}`"
+      :header="item.text"
     >
       <props-table :props="item.props" @change="handleChange"></props-table>
     </a-collapse-panel>
@@ -66,9 +66,7 @@ export default defineComponent({
   setup(props, context) {
     const currentKey = ref('item-0');
     const newGroups = computed(() => {
-      const allNormalProps = props.groups.reduce(
-        (prev, current) => [...prev, ...current.items], [] as string[],
-      );
+      const allNormalProps = props.groups.reduce((prev, current) => [...prev, ...current.items], [] as string[]);
       const specialProps = difference(Object.keys(props.props), allNormalProps);
       return [
         {

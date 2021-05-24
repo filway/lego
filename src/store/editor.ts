@@ -90,13 +90,22 @@ const editor: Module<EditorProps, GlobalDataProps> = {
     setActive(state, currentId: string) {
       state.currentElement = currentId;
     },
-    updateComponent(state, { key, value }) {
+    updateComponent(state, {
+      key, value, id, isRoot,
+    }) {
       const updateComponent = state.components.find(
-        (component) => component.id === state.currentElement,
+        (component) => component.id === (id || state.currentElement),
       );
       if (updateComponent) {
-        updateComponent.props[key as keyof AllComponentProps] = value;
+        if (isRoot) {
+          (updateComponent as any)[key] = value;
+        } else {
+          updateComponent.props[key as keyof AllComponentProps] = value;
+        }
       }
+    },
+    updatePage(state, { key, value }) {
+      state.page.props[key as keyof PageProps] = value;
     },
   },
   getters: {

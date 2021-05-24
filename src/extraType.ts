@@ -5,3 +5,11 @@ export interface UploadResp {
     urls: string[];
   };
 }
+
+export interface RespUploadData {
+  errno: number;
+  message?: string;
+  data: {
+    urls: string[];
+  };
+}

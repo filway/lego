@@ -31,7 +31,7 @@ export const commonDefaultProps: CommonComponentProps = {
   url: '',
   // size
   height: '',
-  width: '318px',
+  width: '373px',
   paddingLeft: '0px',
   paddingRight: '0px',
   paddingTop: '0px',
@@ -65,6 +65,10 @@ export interface TextComponentProps extends CommonComponentProps {
 export interface ImageComponentProps extends CommonComponentProps {
   src: string;
 }
+export interface ShapeComponentProps extends CommonComponentProps {
+  backgroundColor: string;
+}
+export type AllComponentProps = TextComponentProps & ImageComponentProps & ShapeComponentProps
 export const textDefaultProps: TextComponentProps = {
   // basic props - font styles
   text: '正文内容',
@@ -83,9 +87,23 @@ export const imageDefaultProps: ImageComponentProps = {
   src: 'test.url',
   ...commonDefaultProps,
 };
+export const shapeDefaultProps: ShapeComponentProps = {
+  backgroundColor: '',
+  ...commonDefaultProps,
+};
+export const isEditingProp = {
+  isEditing: {
+    type: Boolean,
+    default: false,
+  },
+};
 export const textStylePropNames = without(Object.keys(textDefaultProps), 'actionType', 'url', 'text');
-export const imageStylePropsNames = without(Object.keys(imageDefaultProps), 'src');
-export const transformToComponentProps = <T extends {}>(props: T) => mapValues(props, (item) => ({
-  type: (item as any).constructor as StringConstructor,
-  default: item,
-}));
+export const imageStylePropsNames = without(Object.keys(imageDefaultProps), 'actionType', 'url', 'src');
+export const shapeStylePropsNames = without(Object.keys(imageDefaultProps), 'actionType', 'url');
+export const transformToComponentProps = <T extends {}>(props: T) => {
+  const mapProps = mapValues(props, (item) => ({
+    type: (item as any).constructor as StringConstructor,
+    default: item,
+  }));
+  return { ...mapProps, ...isEditingProp };
+};

@@ -42,6 +42,8 @@ import RenderVnode from '../components/RenderVnode';
 import ColorPicker from './ColorPicker.vue';
 import IconSwitch from './IconSwitch.vue';
 import ImageProcesser from './ImageProcesser.vue';
+import ShadowPicker from './ShadowPicker.vue';
+import BackgroundProcesser from './BackgroundProcesser.vue';
 
 interface FormProps {
   component: string;
@@ -67,6 +69,8 @@ export default defineComponent({
     ColorPicker,
     IconSwitch,
     ImageProcesser,
+    ShadowPicker,
+    BackgroundProcesser,
   },
   emits: ['change'],
   setup(props, context) {
