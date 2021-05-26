@@ -2,6 +2,7 @@
   <div class="edit-wrapper"
     ref="editWrapper"
     :style="styles"
+    :data-component-id="id"
     @mousedown="startMove"
     @click="onItemClick(id)" :class="{ active: active, hidden: hidden }">
     <slot></slot>

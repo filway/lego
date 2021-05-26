@@ -11,10 +11,11 @@ const wrap = (callback: KeyHandler) => {
   };
   return wrapperFn;
 };
-
 export default function initHotKeys() {
   const store = useStore<GlobalDataProps>();
   const currentId = computed(() => store.state.editor.currentElement);
+  const undoIsDisabled = computed<boolean>(() => store.getters.checkUndoDisable);
+  const redoIsDisabled = computed<boolean>(() => store.getters.checkRedoDisable);
   useHotKey('ctrl+c, command+c', () => {
     store.commit('copyComponent', currentId.value);
   });
@@ -50,5 +51,15 @@ export default function initHotKeys() {
   });
   useHotKey('shift+left, shift+a', () => {
     store.commit('moveComponent', { direction: 'Left', amount: 10, id: currentId.value });
+  });
+  useHotKey('ctrl+z', () => {
+    if (!undoIsDisabled.value) {
+      store.commit('undo');
+    }
+  });
+  useHotKey('ctrl+shift+z', () => {
+    if (!redoIsDisabled.value) {
+      store.commit('redo');
+    }
   });
 }

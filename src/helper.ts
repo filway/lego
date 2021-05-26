@@ -60,3 +60,9 @@ export const getParentElement = (element: HTMLElement, className: string) => {
   }
   return null;
 };
+
+export const inserAt = (arr: any[], index: number, newItem: any) => [
+  ...arr.slice(0, index),
+  newItem,
+  ...arr.slice(index),
+];

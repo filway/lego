@@ -10,6 +10,7 @@
       <a-layout style="padding: 0 24px 24px">
         <a-layout-content class="preview-container">
           <p>画布区域</p>
+          <history-area></history-area>
           <div class="preview-list" id="canvas-area">
               <div class="body-container" :style="page.props">
                 <edit-wrapper
@@ -76,10 +77,13 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from 'vue';
+import {
+  computed, defineComponent, onMounted, ref,
+} from 'vue';
 import { useStore } from 'vuex';
 import { forEach, pickBy } from 'lodash-es';
 import initHotKeys from '../plugins/hotKeys';
+import initContextMenu from '../plugins/contextMenu';
 import { GlobalDataProps } from '../store/index';
 import PropsTable from '../components/PropsTable.vue';
 import LayerList from '../components/LayerList.vue';
@@ -88,6 +92,7 @@ import ComponentsList from '../components/ComponentsList.vue';
 import defaultTemplates from '../defaultTemplates';
 import EditWrapper from '../components/EditWrapper.vue';
 import { ComponentData } from '../store/editor';
+import HistoryArea from './editor/HistoryArea.vue';
 
 export type TabType = 'component' | 'layer' | 'page'
 export default defineComponent({
@@ -97,9 +102,11 @@ export default defineComponent({
     PropsTable,
     LayerList,
     EditGroup,
+    HistoryArea,
   },
   setup() {
     initHotKeys();
+    initContextMenu();
     const store = useStore<GlobalDataProps>();
     const activePanel = ref<TabType>('component');
     const components = computed(() => store.state.editor.components);
@@ -120,9 +127,9 @@ export default defineComponent({
     const updatePosition = (data: {left: number; top: number; id: string}) => {
       const { id } = data;
       const updatedData = pickBy<number>(data, (v, k) => k !== 'id');
-      forEach(updatedData, (v, key) => {
-        store.commit('updateComponent', { key, value: `${v}px`, id });
-      });
+      const keyArr = Object.keys(updatedData);
+      const valueArr = Object.values(updatedData).map((v) => `${v}px`);
+      store.commit('updateComponent', { key: keyArr, value: valueArr, id });
     };
     return {
       components,
