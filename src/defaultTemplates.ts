@@ -1,18 +1,23 @@
+import { textDefaultProps } from 'filway-lego-components';
+
 const defaultTextTemplates = [
   {
     text: '大标题',
     fontSize: '30px',
     fontWeight: 'bold',
+    with: '100px',
     tag: 'h2',
   },
   {
     text: '正文内容',
     tag: 'p',
+    with: '100px',
   },
   {
     text: '链接内容',
     color: '#1890ff',
     textDecoration: 'underline',
+    with: '100px',
     tag: 'p',
   },
   {
@@ -30,7 +35,8 @@ const defaultTextTemplates = [
     width: '100px',
     tag: 'button',
     textAlign: 'center',
+    position: 'absolute',
   },
 ];
 
-export default defaultTextTemplates;
+export default defaultTextTemplates.map((template) => ({ ...textDefaultProps, ...template }));

@@ -44,7 +44,8 @@ module.exports = {
           'state',
           'result',
           'readyFile',
-          'element'
+          'element',
+          'component'
         ],
       },
     ],

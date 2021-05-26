@@ -1,9 +1,13 @@
 import { Module } from 'vuex';
+import { message } from 'ant-design-vue';
 import { v4 as uuidv4 } from 'uuid';
 import {
   AllComponentProps, textDefaultProps, imageDefaultProps,
 } from 'filway-lego-components';
-import { GlobalDataProps } from './index';
+import { cloneDeep } from 'lodash';
+import store, { GlobalDataProps } from './index';
+
+type MoveDirection = 'Up' | 'Down' | 'Left' | 'Right';
 
 export interface EditorProps {
   // 供中间编辑器渲染的数组
@@ -11,6 +15,7 @@ export interface EditorProps {
   // 当前编辑的是哪个元素， uuid
   currentElement: string;
   page: PageData;
+  copiedComponent?: ComponentData;
 }
 export interface PageProps {
   backgroundColor: string;
@@ -46,32 +51,32 @@ export const testComponents: ComponentData[] = [
     name: 'l-text',
     layerName: '图层1',
     props: {
-      ...textDefaultProps, text: 'hello', fontSize: '20px', color: '#000000', lineHeight: '1', textAlign: 'left', fontFamily: '',
+      ...textDefaultProps, text: 'hello', fontSize: '20px', color: '#000000', lineHeight: '1', textAlign: 'left', fontFamily: '', height: '100px', width: '100px',
     },
   },
-  {
-    id: uuidv4(),
-    name: 'l-text',
-    layerName: '图层2',
-    props: {
-      ...textDefaultProps, text: 'hello2', fontSize: '10px', fontWeight: 'bold', lineHeight: '2', textAlign: 'left', fontFamily: '',
-    },
-  },
-  {
-    id: uuidv4(),
-    name: 'l-text',
-    layerName: '图层3',
-    props: {
-      ...textDefaultProps, text: 'hello3', fontSize: '15px', actionType: 'url', url: 'https://www.baidu.com', lineHeight: '3', textAlign: 'left', fontFamily: '',
-    },
-  },
-  {
-    id: uuidv4(), name: 'l-image', layerName: '图层4', props: { ...imageDefaultProps, src: 'http://vue-maker.oss-cn-hangzhou.aliyuncs.com/vue-marker/5f3e3a17c305b1070f455202.jpg', width: '100px' },
-  },
+  // {
+  //   id: uuidv4(),
+  //   name: 'l-text',
+  //   layerName: '图层2',
+  //   props: {
+  //     ...textDefaultProps, text: 'hello2', fontSize: '10px', fontWeight: 'bold', lineHeight: '2', textAlign: 'left', fontFamily: '',
+  //   },
+  // },
+  // {
+  //   id: uuidv4(),
+  //   name: 'l-text',
+  //   layerName: '图层3',
+  //   props: {
+  //     ...textDefaultProps, text: 'hello3', fontSize: '15px', actionType: '', url: 'https://www.baidu.com', lineHeight: '3', textAlign: 'left', fontFamily: '',
+  //   },
+  // },
+  // {
+  //   id: uuidv4(), name: 'l-image', layerName: '图层4', props: { ...imageDefaultProps, src: 'http://vue-maker.oss-cn-hangzhou.aliyuncs.com/vue-marker/5f3e3a17c305b1070f455202.jpg', width: '100px' },
+  // },
 ];
 
 const pageDefaultProps = {
-  backgroundColor: '#ffffff', backgroundImage: 'url("https://static.imooc-lego.com/upload-files/%E5%B9%BC%E5%84%BF%E5%9B%AD%E8%83%8C%E6%99%AF%E5%9B%BE-994372.jpg")', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', height: '560px',
+  backgroundColor: '#ffffff', backgroundImage: '', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', height: '560px',
 };
 
 const editor: Module<EditorProps, GlobalDataProps> = {
@@ -85,10 +90,66 @@ const editor: Module<EditorProps, GlobalDataProps> = {
   },
   mutations: {
     addComponent(state, component: ComponentData) {
+      component.layerName = `图层${state.components.length + 1}`;
       state.components.push(component);
     },
     setActive(state, currentId: string) {
       state.currentElement = currentId;
+    },
+    copyComponent(state, id) {
+      const currentComponent = store.getters.getElement(id);
+      if (currentComponent) {
+        state.copiedComponent = currentComponent;
+        message.success('已拷贝当前图层', 1);
+      }
+    },
+    pasteCopiedComponent(state) {
+      if (state.copiedComponent) {
+        const clone = cloneDeep(state.copiedComponent);
+        clone.id = uuidv4();
+        clone.layerName += '副本';
+        state.components.push(clone);
+        message.success('已粘贴当前图层', 1);
+      }
+    },
+    deleteComponent(state, id) {
+      const currentComponent = store.getters.getElement(id);
+      if (currentComponent) {
+        state.components = state.components.filter((component) => component.id !== id);
+        message.success('已删除当前图层', 1);
+      }
+    },
+    moveComponent(state, data: { direction: MoveDirection; amount: number; id: string}) {
+      const currentComponent = store.getters.getElement(data.id);
+      if (currentComponent) {
+        const oldTop = parseInt(currentComponent.props.top || '0', 0);
+        const oldLeft = parseInt(currentComponent.props.left || '0', 0);
+        const { direction, amount } = data;
+        switch (direction) {
+          case 'Up': {
+            const newValue = `${oldTop - amount}px`;
+            store.commit('updateComponent', { key: 'top', value: newValue, id: data.id });
+            break;
+          }
+          case 'Down': {
+            const newValue = `${oldTop + amount}px`;
+            store.commit('updateComponent', { key: 'top', value: newValue, id: data.id });
+            break;
+          }
+          case 'Left': {
+            const newValue = `${oldLeft - amount}px`;
+            store.commit('updateComponent', { key: 'left', value: newValue, id: data.id });
+            break;
+          }
+          case 'Right': {
+            const newValue = `${oldLeft + amount}px`;
+            store.commit('updateComponent', { key: 'left', value: newValue, id: data.id });
+            break;
+          }
+          default:
+            break;
+        }
+      }
     },
     updateComponent(state, {
       key, value, id, isRoot,
@@ -111,6 +172,9 @@ const editor: Module<EditorProps, GlobalDataProps> = {
   getters: {
     getCurrentElement: (state) => state.components.find(
       (component) => component.id === state.currentElement,
+    ),
+    getElement: (state) => (id: string) => state.components.find(
+      (component) => component.id === (id || state.currentElement),
     ),
   },
 };

@@ -14,12 +14,16 @@
               <div class="body-container" :style="page.props">
                 <edit-wrapper
                   @setActive="setActive"
+                  @update-position="updatePosition"
                   v-for="component in components"
                   :key="component.id"
                   :id="component.id"
+                  :hidden="component.isHidden"
+                  :props="component.props"
                   :active="component.id === (currentElement && currentElement.id)"
                 >
                   <component
+                    draggable="false"
                     :is="component.name"
                     v-bind="component.props"
                   />
@@ -74,6 +78,8 @@
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue';
 import { useStore } from 'vuex';
+import { forEach, pickBy } from 'lodash-es';
+import initHotKeys from '../plugins/hotKeys';
 import { GlobalDataProps } from '../store/index';
 import PropsTable from '../components/PropsTable.vue';
 import LayerList from '../components/LayerList.vue';
@@ -93,6 +99,7 @@ export default defineComponent({
     EditGroup,
   },
   setup() {
+    initHotKeys();
     const store = useStore<GlobalDataProps>();
     const activePanel = ref<TabType>('component');
     const components = computed(() => store.state.editor.components);
@@ -108,8 +115,14 @@ export default defineComponent({
       store.commit('updateComponent', e);
     };
     const pageChange = (e: any) => {
-      console.log('page', e);
       store.commit('updatePage', e);
+    };
+    const updatePosition = (data: {left: number; top: number; id: string}) => {
+      const { id } = data;
+      const updatedData = pickBy<number>(data, (v, k) => k !== 'id');
+      forEach(updatedData, (v, key) => {
+        store.commit('updateComponent', { key, value: `${v}px`, id });
+      });
     };
     return {
       components,
@@ -121,6 +134,7 @@ export default defineComponent({
       activePanel,
       page,
       pageChange,
+      updatePosition,
     };
   },
 });
