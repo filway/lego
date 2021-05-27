@@ -17,6 +17,7 @@ module.exports = {
   },
 
   rules: {
+    '@typescript-eslint/no-var-requires': 0,
     'no-shadow': 'off',
     'max-len': [1, 120],
     'react/react-in-jsx-scope': 'off',

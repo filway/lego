@@ -42,6 +42,7 @@ export default defineComponent({
         name: 'l-text',
         props,
       };
+      console.log(componentData);
       context.emit('on-item-click', componentData);
     };
     const onImageUploaded = (data: { resp: UploadResp; file: File }) => {
