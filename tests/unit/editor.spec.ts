@@ -17,6 +17,9 @@ const getCurrentAndAssert = (text: string) => {
   expect(currentElement.props.text).toBe(text);
 };
 describe('test editor module', () => {
+  beforeAll(() => {
+    jest.useFakeTimers();
+  });
   it('should have default components', () => {
     expect(store.state.editor.components).toHaveLength(cloneComponents.length);
   });
@@ -98,6 +101,7 @@ describe('test editor module', () => {
     store.commit('deleteComponent', '2345');
     // update a component
     store.commit('updateComponent', { key: 'text', value: 'update', id: '1234' });
+    jest.runAllTimers();
     store.commit('setActive', '1234');
     getCurrentAndAssert('update');
     // undo step 1, text should be back to text1
