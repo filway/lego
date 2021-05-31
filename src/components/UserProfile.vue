@@ -8,7 +8,7 @@
   </a-button>
   <div v-else>
     <a-dropdown-button  class="user-profile-component">
-      <router-link to="/setting">{{user.userName}}</router-link>
+      <router-link to="/setting">{{user.data && user.data.nickName}}</router-link>
       <template v-slot:overlay>
         <a-menu class="user-profile-dropdown">
           <a-menu-item key="0" @click="logout">登出</a-menu-item>
@@ -44,7 +44,7 @@ export default defineComponent({
       store.commit('logout');
       message.success('退出登录成功，2秒后跳转到首页', 2);
       setTimeout(() => {
-        router.push('/');
+        router.push('/login');
       }, 2000);
     };
     return {
