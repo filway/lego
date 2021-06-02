@@ -1,11 +1,12 @@
 <template>
-  <a-button
-    type="primary" v-if="!user.isLogin"
-    class="user-profile-component"
-    @click="login"
-  >
-    登录
-  </a-button>
+  <router-link to="/login" v-if="!user.isLogin">
+    <a-button
+      type="primary"
+      class="user-profile-component"
+    >
+      登录
+    </a-button>
+  </router-link>
   <div v-else>
     <a-dropdown-button  class="user-profile-component">
       <router-link to="/setting">{{user.data && user.data.nickName}}</router-link>
@@ -44,7 +45,7 @@ export default defineComponent({
       store.commit('logout');
       message.success('退出登录成功，2秒后跳转到首页', 2);
       setTimeout(() => {
-        router.push('/login');
+        router.push('/');
       }, 2000);
     };
     return {

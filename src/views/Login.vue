@@ -22,7 +22,7 @@
           </a-input>
         </a-form-item>
         <a-form-item>
-          <a-button type="primary" size="large" @click="login">
+          <a-button type="primary" size="large" @click="login" :loading="isLoginLoading">
             登录
           </a-button>
           <a-button size="large"
@@ -43,7 +43,6 @@ import {
   computed,
   defineComponent, reactive, ref, Ref, watch,
 } from 'vue';
-import { useForm } from '@ant-design-vue/use';
 import { UserOutlined, LockOutlined } from '@ant-design/icons-vue';
 import { Rule } from 'ant-design-vue/es/form/interface';
 import { reject } from 'lodash';
@@ -51,6 +50,7 @@ import axios from 'axios';
 import { message } from 'ant-design-vue';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
+import { GlobalDataProps } from '../store/index';
 
 interface RuleFormInstance {
   validate: () => Promise<any>;
@@ -61,7 +61,8 @@ export default defineComponent({
     LockOutlined,
   },
   setup() {
-    const store = useStore();
+    const store = useStore<GlobalDataProps>();
+    const isLoginLoading = computed(() => store.getters.isOpLoading('login'));
     const router = useRouter();
     const counter = ref(60);
     let timer = 0;
@@ -105,14 +106,13 @@ export default defineComponent({
         { required: true, message: '验证码不能为空', trigger: 'blur' },
       ],
     });
-    const { resetFields } = useForm(form, rules);
     const login = () => {
       loginForm.value.validate().then(() => {
         const payload = {
           phoneNumber: form.cellphone,
           veriCode: form.verifyCode,
         };
-        store.dispatch('loginAndFetch', payload).then(() => {
+        store.dispatch('loginAndFetch', { data: payload }).then(() => {
           message.success('登录成功 2秒后跳转首页');
           setTimeout(() => {
             router.push('/');
@@ -134,6 +134,7 @@ export default defineComponent({
       codeButtonDisabe,
       getCode,
       counter,
+      isLoginLoading,
     };
   },
 });

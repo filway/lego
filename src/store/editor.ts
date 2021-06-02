@@ -3,7 +3,7 @@ import { message } from 'ant-design-vue';
 import { v4 as uuidv4 } from 'uuid';
 import { cloneDeep } from 'lodash-es';
 import { AllComponentProps, textDefaultProps, imageDefaultProps } from 'filway-lego-components';
-import store, { GlobalDataProps } from './index';
+import store, { actionWrapper, GlobalDataProps } from './index';
 import { insertAt } from '../helper';
 import {
   RespWorkData, ListData, RespData, RespListData,
@@ -417,6 +417,9 @@ const editor: Module<EditorProps, GlobalDataProps> = {
       }
       return false;
     },
+  },
+  actions: {
+    fetchWork: actionWrapper('/works/:id', 'fetchWork'),
   },
 };
 

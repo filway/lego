@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { Module } from 'vuex';
-import { GlobalDataProps } from './index';
+import { actionWrapper, GlobalDataProps } from './index';
 import { RespListData } from './respTypes';
 
 export interface TemplateProps {
@@ -25,11 +25,12 @@ const templates: Module<TemplatesProps, GlobalDataProps> = {
     },
   },
   actions: {
-    fetchTemplates(context) {
-      return axios.get('/templates').then((resp) => {
-        context.commit('fetchTemplates', resp.data);
-      });
-    },
+    fetchTemplates: actionWrapper('/templates', 'fetchTemplates'),
+    // fetchTemplates(context) {
+    //   return axios.get('/templates').then((resp) => {
+    //     context.commit('fetchTemplates', resp.data);
+    //   });
+    // },
   },
   getters: {
     getTemplateById: (

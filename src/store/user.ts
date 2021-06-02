@@ -1,6 +1,6 @@
-import axios, { AxiosRequestConfig } from 'axios';
-import { ActionContext, Module } from 'vuex';
-import { GlobalDataProps } from './index';
+import axios from 'axios';
+import { Module } from 'vuex';
+import { actionWrapper, GlobalDataProps } from './index';
 import { RespData } from './respTypes';
 
 export interface UserDataProps {
@@ -23,31 +23,28 @@ export interface UserProps {
   data?: UserDataProps;
 }
 
-// 第二步，确定参数
-// 第一步 不管三七二十一，先返回一个函数和原来的函数处理一摸一样;
-const actionWrapper = (url: string, commitName: string, config: AxiosRequestConfig = { method: 'get' }) => async (context: ActionContext<any, any>, payload?: any) => {
-  // 第三部 写内部重复的逻辑
-  const newConfig = { ...config, data: payload };
-  const { data } = await axios(url, newConfig);
-  context.commit(commitName, data);
-  return data;
-};
 const user: Module<UserProps, GlobalDataProps> = {
   state: {
     isLogin: false,
+    data: {},
+    token: localStorage.getItem('token') || '',
   },
   mutations: {
     login(state, rawData: RespData<{ token: string}>) {
       const { token } = rawData.data;
       state.token = token;
+      localStorage.setItem('token', token);
       axios.defaults.headers.common.Authorization = `Bearer ${token}`;
-    },
-    logout(state) {
-      state.isLogin = false;
     },
     fetchCurrentUser(state, rawData: RespData<UserDataProps>) {
       state.isLogin = true;
       state.data = { ...rawData.data };
+    },
+    logout(state) {
+      state.token = '';
+      state.isLogin = false;
+      localStorage.removeItem('token');
+      delete axios.defaults.headers.common.Authorization;
     },
   },
   actions: {

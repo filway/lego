@@ -81,6 +81,7 @@ import {
   computed, defineComponent, onMounted, ref,
 } from 'vue';
 import { useStore } from 'vuex';
+import { useRoute } from 'vue-router';
 import { forEach, pickBy } from 'lodash-es';
 import initHotKeys from '../plugins/hotKeys';
 import initContextMenu from '../plugins/contextMenu';
@@ -107,11 +108,18 @@ export default defineComponent({
   setup() {
     initHotKeys();
     initContextMenu();
+    const route = useRoute();
+    const currentWorkId = route.params.id;
     const store = useStore<GlobalDataProps>();
     const activePanel = ref<TabType>('component');
     const components = computed(() => store.state.editor.components);
     const page = computed(() => store.state.editor.page);
     const currentElement = computed<ComponentData | null>(() => store.getters.getCurrentElement);
+    onMounted(() => {
+      if (currentWorkId) {
+        store.dispatch('fetchWork', { urlParams: { id: currentWorkId } });
+      }
+    });
     const addItem = (component: any) => {
       store.commit('addComponent', component);
     };
