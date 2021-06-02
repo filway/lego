@@ -1,6 +1,35 @@
 <template>
   <div class="editor-container">
     <a-layout>
+      <a-layout-header class="header">
+        <div class="page-title">
+          <router-link to="/">
+            <img alt="慕课乐高" src="../assets/logo-simple.png" class="logo-simple">
+          </router-link>
+          <inline-edit :value="page.title" @change="titleChange"/>
+        </div>
+         <a-menu
+        :selectable="false"
+        theme="dark"
+        mode="horizontal"
+        :style="{ lineHeight: '64px' }"
+      >
+        <a-menu-item key="1">
+          <a-button type="primary">预览和设置</a-button>
+        </a-menu-item>
+        <a-menu-item key="2">
+          <a-button type="primary" @click="saveWork" :loading="saveIsLoading">保存</a-button>
+        </a-menu-item>
+        <a-menu-item key="3">
+          <a-button type="primary" @click="publishWork" :loading="isPublishing">发布</a-button>
+        </a-menu-item>
+        <a-menu-item key="4">
+          <user-profile :user="userInfo"></user-profile>
+        </a-menu-item>
+      </a-menu>
+      </a-layout-header>
+    </a-layout>
+    <a-layout>
       <a-layout-sider width="300" style="background: #fff">
         <div class="sidebar-container">
           组件列表
@@ -78,11 +107,12 @@
 
 <script lang="ts">
 import {
-  computed, defineComponent, onMounted, ref,
+  computed, defineComponent, onMounted, onUnmounted, ref,
 } from 'vue';
 import { useStore } from 'vuex';
-import { useRoute } from 'vue-router';
+import { onBeforeRouteLeave, useRoute } from 'vue-router';
 import { forEach, pickBy } from 'lodash-es';
+import { Modal } from 'ant-design-vue';
 import initHotKeys from '../plugins/hotKeys';
 import initContextMenu from '../plugins/contextMenu';
 import { GlobalDataProps } from '../store/index';
@@ -94,6 +124,10 @@ import defaultTemplates from '../defaultTemplates';
 import EditWrapper from '../components/EditWrapper.vue';
 import { ComponentData } from '../store/editor';
 import HistoryArea from './editor/HistoryArea.vue';
+import InlineEdit from '../components/InlineEdit.vue';
+import UserProfile from '../components/UserProfile.vue';
+import useSaveWork from '../hooks/useSaveWork';
+import usePublishWork from '../hooks/usePublishWork';
 
 export type TabType = 'component' | 'layer' | 'page'
 export default defineComponent({
@@ -104,6 +138,8 @@ export default defineComponent({
     LayerList,
     EditGroup,
     HistoryArea,
+    InlineEdit,
+    UserProfile,
   },
   setup() {
     initHotKeys();
@@ -114,7 +150,12 @@ export default defineComponent({
     const activePanel = ref<TabType>('component');
     const components = computed(() => store.state.editor.components);
     const page = computed(() => store.state.editor.page);
+    const userInfo = computed(() => store.state.user);
+
     const currentElement = computed<ComponentData | null>(() => store.getters.getCurrentElement);
+    const { saveWork, saveIsLoading } = useSaveWork();
+    const { publishWork, isPublishing } = usePublishWork();
+
     onMounted(() => {
       if (currentWorkId) {
         store.dispatch('fetchWork', { urlParams: { id: currentWorkId } });
@@ -131,6 +172,9 @@ export default defineComponent({
     };
     const pageChange = (e: any) => {
       store.commit('updatePage', e);
+    };
+    const titleChange = (newTitle: string) => {
+      store.commit('updatePage', { key: 'title', value: newTitle, isRoot: true });
     };
     const updatePosition = (data: {left: number; top: number; id: string}) => {
       const { id } = data;
@@ -150,6 +194,12 @@ export default defineComponent({
       page,
       pageChange,
       updatePosition,
+      titleChange,
+      userInfo,
+      saveWork,
+      saveIsLoading,
+      publishWork,
+      isPublishing,
     };
   },
 });
@@ -177,5 +227,20 @@ export default defineComponent({
   position: fixed;
   margin-top: 50px;
   max-height: 80vh;
+}
+.page-title {
+  display: flex;
+}
+.page-title .inline-edit span {
+  font-weight: 500;
+  margin-left: 10px;
+  font-size: 16px;
+}
+.preview-list.canvas-fix .edit-wrapper > * {
+  box-shadow: none !important;
+}
+.preview-list.canvas-fix {
+  position: absolute;
+  max-height: none;
 }
 </style>

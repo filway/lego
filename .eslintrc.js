@@ -17,6 +17,7 @@ module.exports = {
   },
 
   rules: {
+    'consistent-return': 0,
     'prefer-promise-reject-errors': 0,
     '@typescript-eslint/no-var-requires': 0,
     'no-shadow': 'off',

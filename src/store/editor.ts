@@ -420,6 +420,11 @@ const editor: Module<EditorProps, GlobalDataProps> = {
   },
   actions: {
     fetchWork: actionWrapper('/works/:id', 'fetchWork'),
+    saveWork: actionWrapper('/works/:id', 'saveWork', { method: 'patch' }),
+    publishWork: actionWrapper('/works/publish/:id', 'publishWork', { method: 'post' }),
+    fetchChannels: actionWrapper('/channel/getWorkChannels/:id', 'fetchChannels'),
+    createChannel: actionWrapper('/channel/', 'createChannel', { method: 'post' }),
+    deleteChannel: actionWrapper('/channel/:id', 'deleteChannel', { method: 'delete' }),
   },
 };
 

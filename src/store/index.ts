@@ -25,8 +25,9 @@ export function actionWrapper(url: string, commitName: string, config: AxiosRequ
     const newConfig = { ...config, data, opName: commitName };
     let newURL = url;
     if (urlParams) {
-      const toPath = compile(url, { encode: encodeURIComponent });
-      newURL = toPath(urlParams);
+      // const toPath = compile(url, { encode: encodeURIComponent });
+      // newURL = toPath(urlParams);
+      newURL = `/works/${urlParams.id}`;
       console.log(newURL);
     }
     const resp = await axios(newURL, newConfig);
