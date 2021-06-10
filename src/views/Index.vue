@@ -5,7 +5,12 @@
         <div class="page-title">
           <router-link to="/">慕课乐高</router-link>
         </div>
-        <user-profile :user="user"></user-profile>
+        <div class="right-col">
+          <div class="user-operation">
+            <a-button type="primary" @click="createDesign">创建设计</a-button>
+            <user-profile :user="user"></user-profile>
+          </div>
+        </div>
       </a-layout-header>
       <a-layout-content class="home-layout">
         <router-view></router-view>
@@ -20,8 +25,9 @@
 <script lang="ts">
 import { computed, defineComponent } from 'vue';
 import { useStore } from 'vuex';
-import UserProfile from '../components/UserProfile.vue';
+import useCreateDesign from '@/hooks/useCreateDesign';
 import { GlobalDataProps } from '../store/index';
+import UserProfile from '../components/UserProfile.vue';
 
 export default defineComponent({
   name: 'Index',
@@ -31,8 +37,10 @@ export default defineComponent({
   setup() {
     const store = useStore<GlobalDataProps>();
     const user = computed(() => store.state.user);
+    const createDesign = useCreateDesign();
     return {
       user,
+      createDesign,
     };
   },
 });
@@ -46,5 +54,9 @@ export default defineComponent({
 }
 .page-title {
   color: #fff;
+}
+.user-operation{
+  display: flex;
+  align-items: center;
 }
 </style>

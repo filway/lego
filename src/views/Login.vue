@@ -74,7 +74,7 @@ export default defineComponent({
     const codeButtonDisabe = computed(() => !/^1[3-9]\d{9}$/.test(form.cellphone.trim()) || (counter.value < 60));
     const startCounter = () => {
       counter.value -= 1;
-      timer = setInterval(() => {
+      timer = window.setInterval(() => {
         counter.value -= 1;
       }, 1000);
     };

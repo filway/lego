@@ -3,7 +3,7 @@ import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import Antd from 'ant-design-vue';
 import LegoBricks from 'filway-lego-components';
 import App from './App.vue';
-import 'ant-design-vue/dist/antd.css';
+import 'ant-design-vue/dist/antd.less';
 import store from './store';
 import router from './routes/index';
 import 'filway-lego-components/dist/bundle.css';
@@ -15,7 +15,16 @@ export type ICustomAxiosConfig = AxiosRequestConfig & {
 }
 
 const app = createApp(App);
-const baseBackendURL = 'http://localhost:3000';
+let baseBackendURL = '';
+let baseH5URL = '';
+if (process.env.NODE_ENV === 'development' || process.env.VUE_APP_STAGING) {
+  baseBackendURL = 'http://localhost:3000';
+  baseH5URL = 'http://182.92.168.192:8082';
+} else {
+  baseBackendURL = 'http://localhost:3000';
+  baseH5URL = 'http://182.92.168.192:8082';
+}
+export { baseH5URL, baseBackendURL };
 axios.defaults.baseURL = `${baseBackendURL}/api/`;
 axios.interceptors.request.use((config) => {
   const newConfig = config as ICustomAxiosConfig;

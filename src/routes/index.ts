@@ -5,6 +5,7 @@ import Home from '../views/Home.vue';
 import Editor from '../views/Editor.vue';
 import TemplateDetail from '../views/TemplateDetail.vue';
 import Index from '../views/Index.vue';
+import Works from '../views/Works.vue';
 import Login from '../views/Login.vue';
 import store from '../store';
 
@@ -30,6 +31,9 @@ const router = createRouter({
         },
         {
           path: 'template/:id', name: 'template', component: TemplateDetail, meta: { title: '模版详情' },
+        },
+        {
+          path: 'works', name: 'works', component: Works, meta: { title: '我的作品', requiredLogin: true },
         },
       ],
     },
