@@ -1,7 +1,7 @@
 import {
   computed, defineComponent, PropType, VNode,
 } from 'vue';
-import { reduce } from 'lodash';
+import { reduce } from 'lodash-es';
 import {
   Input, InputNumber, Slider, Radio, Select,
 } from 'ant-design-vue';

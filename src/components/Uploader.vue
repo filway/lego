@@ -49,7 +49,7 @@ import {
 import { DeleteOutlined, LoadingOutlined, FileOutlined } from '@ant-design/icons-vue';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
-import { last } from 'lodash';
+import { last } from 'lodash-es';
 
 type UploadStaus = 'ready' | 'loading' | 'success' | 'error'
 type FileListType = 'picture' | 'text'

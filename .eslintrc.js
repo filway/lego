@@ -49,7 +49,9 @@ module.exports = {
           'result',
           'readyFile',
           'element',
-          'component'
+          'component',
+          'config',
+          'args'
         ],
       },
     ],

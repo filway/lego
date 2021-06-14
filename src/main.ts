@@ -1,7 +1,7 @@
 import { createApp } from 'vue';
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
-import Antd from 'ant-design-vue';
 import LegoBricks from 'filway-lego-components';
+import Antd from './configAntD';
 import App from './App.vue';
 import 'ant-design-vue/dist/antd.less';
 import store from './store';

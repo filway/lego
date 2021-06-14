@@ -1,3 +1,4 @@
+const webpack = require('webpack');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 const isStaging = !!process.env.VUE_APP_STAGING;
@@ -22,6 +23,12 @@ module.exports = {
     },
   },
   configureWebpack: (config) => {
+    config.plugins.push(
+      new webpack.IgnorePlugin({
+        resourceRegExp: /^\.\/locale$/,
+        contextRegExp: /moment$/,
+      }),
+    );
     if (isAnalyzeMode) {
       config.plugins.push(
         new BundleAnalyzerPlugin({
@@ -29,5 +36,29 @@ module.exports = {
         }),
       );
     }
+    config.optimization.splitChunks = {
+      maxInitialRequests: Infinity,
+      minSize: 300 * 1024,
+      chunks: 'all',
+      cacheGroups: {
+        antVendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name(module) {
+            // get the name.
+            // node_modules/packageName/sub/path
+            // or node_modules/packageName
+            const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
+            return `npm.${packageName.replace('@', '')}`;
+          },
+        },
+      },
+    };
+  },
+  chainWebpack: (config) => {
+    config.plugin('html').tap((args) => {
+      args[0].title = '慕课乐高';
+      args[0].desc = '一键生成 H5 海报';
+      return args;
+    });
   },
 };

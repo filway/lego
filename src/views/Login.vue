@@ -45,7 +45,7 @@ import {
 } from 'vue';
 import { UserOutlined, LockOutlined } from '@ant-design/icons-vue';
 import { Rule } from 'ant-design-vue/es/form/interface';
-import { reject } from 'lodash';
+import { reject } from 'lodash-es';
 import axios from 'axios';
 import { message } from 'ant-design-vue';
 import { useStore } from 'vuex';

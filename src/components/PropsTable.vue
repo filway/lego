@@ -35,7 +35,7 @@
 import {
   computed, defineComponent, PropType, VNode,
 } from 'vue';
-import { reduce } from 'lodash';
+import { reduce } from 'lodash-es';
 import { TextComponentProps } from '../defaultProps';
 import { mapPropsToForms } from '../propsMap';
 import RenderVnode from '../components/RenderVnode';

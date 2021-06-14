@@ -15,7 +15,7 @@
 <script lang="ts">
 
 import { AllComponentProps } from 'filway-lego-components';
-import { difference } from 'lodash';
+import { difference } from 'lodash-es';
 import {
   defineComponent, PropType, computed, ref,
 } from 'vue';
