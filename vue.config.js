@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const CompressionWebpackPlugin = require('compression-webpack-plugin');
 
 const isStaging = !!process.env.VUE_APP_STAGING;
 const isProduction = process.env.NODE_ENV === 'production';
@@ -29,6 +30,15 @@ module.exports = {
         contextRegExp: /moment$/,
       }),
     );
+    if (isProduction) {
+      config.plugins.push(
+        new CompressionWebpackPlugin({
+          algorithm: 'gzip',
+          test: /\.js$|\.html$|\.json$|\.css/,
+          threshold: 10240,
+        }),
+      );
+    }
     if (isAnalyzeMode) {
       config.plugins.push(
         new BundleAnalyzerPlugin({
