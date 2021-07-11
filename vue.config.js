@@ -10,7 +10,7 @@ module.exports = {
   devServer: {
     disableHostCheck: true,
   },
-  publicPath: (isProduction && !isStaging) ? 'https://oss.imooc-lego.com/editor' : '/',
+  publicPath: (isProduction && !isStaging) ? 'https://oss.filway.cn/editor' : '/',
   css: {
     loaderOptions: {
       less: {
