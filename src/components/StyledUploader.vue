@@ -1,7 +1,7 @@
 <template>
   <uploader
     class="styled-uploader"
-    action="http://localhost:3000/api/utils/upload"
+    action="/utils/upload-img"
     :showUploadList="false"
     :beforeUpload="commonUploadCheck"
     @success="(data) => {handleUploadSuccess(data.resp, data.file.raw)}"

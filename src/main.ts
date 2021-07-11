@@ -18,11 +18,11 @@ const app = createApp(App);
 let baseBackendURL = '';
 let baseH5URL = '';
 if (process.env.NODE_ENV === 'development' || process.env.VUE_APP_STAGING) {
-  baseBackendURL = 'http://localhost:3000';
-  baseH5URL = 'http://182.92.168.192:8082';
+  baseBackendURL = 'https://h5api.filway.cn';
+  baseH5URL = 'https://h5.filway.cn';
 } else {
-  baseBackendURL = 'http://localhost:3000';
-  baseH5URL = 'http://182.92.168.192:8082';
+  baseBackendURL = 'https://h5api.filway.cn';
+  baseH5URL = 'https://h5.filway.cn';
 }
 export { baseH5URL, baseBackendURL };
 axios.defaults.baseURL = `${baseBackendURL}/api/`;
